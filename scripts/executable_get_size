@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source colors.conf
+
+declare -A resolutions
+resolutions[FHD]="1920x1080"
+resolutions[QHD]="2560x1440"
+resolutions[4K]="3840x2160"
+
+path="/home/broa/Pictures/wallpapers"
+wallpapers=($(find "$path" -iname "*.jpeg"))
+declare -a wrong_resolutions
+
+for image in "${wallpapers[@]}"; do
+  suposed_size=$(echo "$image" | awk -F "[()]" '{ print $2 }')
+  actual_size=$(identify -format "%wx%h" "$path/$image")
+ 
+  for size in "${!resolutions[@]}"; do
+    if [[ "$suposed_size" == "$size" ]]; then
+      if [[ "$actual_size" != "${resolutions[$size]}" ]]; then
+        echo -e "${red}$image${end}\n  Size: $actual_size\n"
+        wrong_resolutions+=("yes")
+      fi
+    fi
+  done
+done
+
+if [[ ! ${wrong_resolutions[*]} ]]; then
+  echo -e "${bold_green}There's no images with wrong resolutions${end}\n" 
+fi

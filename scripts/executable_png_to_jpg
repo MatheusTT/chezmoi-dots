@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+source colors.conf
+
+
+path="/home/$(whoami)/Pictures/wallpapers"
+images=($(ls $path | sed "/README.md/d"))
+
+cd $path
+
+if ( grep -q ".png" <<< ${images[@]} ) ; then
+  for i in ${images[@]} ; do
+    image_type=$( ls $i | cut -d '.' -f 2 )
+
+    if [[ "$image_type" == "png" ]] ; then
+      echo -e "Converting ${bold_green}$i${end}\n"
+      new_image="$( ls $i | cut -d '.' -f 1 ).jpg"
+
+      convert "$i" "$new_image" && rm "$i"
+    fi
+  done
+else
+  echo -e "${bold_red}No png images to convert${end}\n"
+fi

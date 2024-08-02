@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=Hyprland
+export GTK_THEME=Tokyonight-Dark-BL
+
+export GDK_BACKEND="wayland,x11"
+# export WLR_DRM_DEVICES=/dev/dri/card0
+
+exec Hyprland 1>/dev/null

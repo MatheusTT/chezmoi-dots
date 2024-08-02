@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+get-date() {
+  date "+%A_%R_%d-%m-%y"
+}
+
+freeze-select() {
+  grim - | imv -f - &
+  imv_pid=$!
+  # while [ -z "$(xdotool search --pid "$imv_pid")" ]; do
+      # sleep 0.1
+  # done
+}
+
+outline_color="0.38,0.68,0.93"
+
+
+while [[ "$1" ]]; do
+  case "$1" in
+    select|s)
+      freeze-select
+      grim "$HOME/Pictures/screenshots/$(get-date).png" -g "$(slurp -c $outline_color)"
+      kill $imv_pid
+      ;;
+    select-copy|scp)
+      freeze-select
+      maim -us -c $outline_color -b 4 | xclip -selection clipboard -t image/png
+      kill $imv_pid
+      ;;
+    full|f)
+      maim -u "$HOME/Pictures/screenshots/$(get-date).png"
+      ;;
+    full-copy|fcp)
+      maim -u | xclip -selection clipboard -t image/png
+      ;;
+  esac
+  exit
+done

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+icon_font="Material-Design-Icons"
+font="JetBrains Mono Medium Nerd Font Complete"
+image_path="/tmp/desktop.png"
+
+background_ring="#1a1b26"
+background_inside="#16161ecc"
+background_inside_no_opacity="#16161e"
+font_color="#a9b1d6"
+green="#9ece6a"
+red="#f7768e"
+blue="#7aadf7"
+
+player_status="$(playerctl status)"
+
+pre_lock() {
+  # Screenshot, blur, darkens the image and add a lock icon
+  maim -u | convert /dev/stdin \
+    -blur 0x6 \
+    -gamma 0.4 \
+    -gravity Center \
+    -font $icon_font \
+    -pointsize 80 \
+    -fill white -stroke black -strokewidth 2 \
+    -annotate +0-3 󰌾 \
+    $image_path
+
+  if [[ "$player_status" == "Playing" ]]; then
+    playerctl pause
+  fi
+
+  setxkbmap br
+}
+
+post_lock() {
+  if [[ $player_status == "Playing" ]]; then
+    playerctl play
+  fi
+
+  [[ -f $image_path ]] && rm $image_path
+  setxkbmap br
+}
+
+pre_lock
+
+i3lock \
+  --nofork \
+  --ignore-empty-password \
+  --no-modkey-text \
+  --radius 100 \
+  --ring-width 8.0 \
+  --keyhl-color=$green \
+  --bshl-color=$red \
+  --line-uses-inside \
+  --separator-color=$background_ring \
+  --inside-color=$background_inside \
+  --insidever-color=$background_inside_no_opacity \
+  --insidewrong-color=$background_inside_no_opacity \
+  --ring-color=$background_ring \
+  --ringver-color=$blue \
+  --ringwrong-color=$red \
+  --clock \
+  --{time,date,greeter,verif,wrong}-color=$font_color \
+  --{time,date,greeter,verif,wrong}-font="$font" \
+  --time-size=48 \
+  --{date,greeter,verif,wrong}-size=24 \
+  --time-str="%H:%M" \
+  --date-str="%A, %d/%m/%Y" \
+  --greeter-text="Type the password to unlock" \
+  --time-pos="960:100" \
+  --{verif,wrong}-pos="960:545" \
+  --greeter-pos="960:750" \
+  -i $image_path --fill
+
+post_lock

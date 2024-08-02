@@ -1,0 +1,35 @@
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+  font-family: 'JetBrainsMono Nerd Font Mono';
+  font-weight: bold;
+}
+
+tooltip.background {
+  font-size: 18;
+  background-color: #0f0f17;
+  color: #bfc9db;
+  // border-radius: 10px;
+}
+
+$icon-font: 'Material Design Icons';
+$bg-color: #16161e;
+$bg-color2: #1a1b26;
+$fg-color: #a9b1d6;
+
+
+// Bar
+@import "src/scss/bar.scss";
+// Battery
+@import "src/scss/battery.scss";
+// Calendar
+@import "src/scss/calendar.scss";
+// Monitor
+@import "src/scss/monitor.scss";
+// Music
+@import "src/scss/music.scss";
+// Sidebar
+@import "src/scss/sidebar.scss";
+// Toast
+@import "src/scss/toast.scss"
+
+@import "src/updates/updates.scss"

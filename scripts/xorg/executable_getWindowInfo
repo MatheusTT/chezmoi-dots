@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+path="$HOME/$(date '+%d|%m - %H:%M:%S').txt"
+touch "$path"
+xprop -id "$(xdotool getactivewindow)" > "$path"

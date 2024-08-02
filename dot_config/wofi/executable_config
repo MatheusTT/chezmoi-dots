@@ -1,0 +1,17 @@
+width=1920
+height=43
+location=top_left
+show=drun
+prompt=Search...
+filter_rate=100
+allow_markup=true
+no_actions=true
+halign=center
+valign=center
+orientation=horizontal
+content_halign=start
+insensitive=true
+allow_images=true
+hide_scroll=true
+image_size=28
+gtk_dark=true

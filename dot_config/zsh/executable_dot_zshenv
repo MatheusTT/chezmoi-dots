@@ -1,5 +1,6 @@
 # Paths
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/share/spicetify:$PATH
 export PATH=$HOME/scripts:$PATH
 
 # XDG
@@ -15,17 +16,17 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # Variables to have less unneeded dotfiles on home
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export LESSHISTFILE="$XDG_CACHE_HOME/less_history"
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
-export PYTHONSTARTUP="/etc/python/pythonrc"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export WINEPREFIX="$XDG_DATA_HOME/wine"
 export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
-export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
 export XCURSOR_PATH="/usr/share/icons:$XDG_DATA_HOME/icons"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
+export LESSHISTFILE="$XDG_CACHE_HOME/less_history"
 
 # Other variables
 export EDITOR=nvim
@@ -46,5 +47,6 @@ export CXX="clang++"
 export LD_LIBRARY_PATH="$DESTDIR/usr/local/lib/:$LD_LIBRARY_PATH"
 export GI_TYPELIB_PATH="$DESTDIR/usr/local/lib/:$GI_TYPELIB_PATH"
 
+# libtorch
 export LIBTORCH="$XDG_DATA_HOME/libtorch"
 export LD_LIBRARY_PATH=${LIBTORCH}/lib:$LD_LIBRARY_PATH

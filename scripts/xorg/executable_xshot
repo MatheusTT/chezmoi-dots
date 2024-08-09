@@ -8,7 +8,7 @@ freeze-select() {
   maim -u | feh -F - &
   feh_pid=$!
   while [ -z "$(xdotool search --pid "$feh_pid")" ]; do
-      sleep 0.1
+    sleep 0.1
   done
 }
 
@@ -19,12 +19,12 @@ while [[ "$1" ]]; do
   case "$1" in
     select|s)
       freeze-select
-      maim -us -c $outline_color -b 4 "$HOME/Pictures/screenshots/$(get-date).png"
+      maim -usk -c $outline_color -b 4 "$HOME/Pictures/screenshots/$(get-date).png"
       kill $feh_pid
       ;;
     select-copy|scp)
       freeze-select
-      maim -us -c $outline_color -b 4 | xclip -selection clipboard -t image/png
+      maim -usk -c $outline_color -b 4 | xclip -selection clipboard -t image/png
       kill $feh_pid
       ;;
     full|f)

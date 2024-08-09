@@ -62,7 +62,7 @@ done
 
 ## Autostart
 # Polybar
-#$HOME/.config/polybar/launch.sh &
+$HOME/.config/polybar/launch.sh &
 
 # Eww bar
 # "$HOME"/.config/eww/launch.sh &

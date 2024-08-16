@@ -7,7 +7,7 @@ resolutions[FHD]="1920x1080"
 resolutions[QHD]="2560x1440"
 resolutions[4K]="3840x2160"
 
-path="/home/broa/Pictures/wallpapers"
+path="$XDG_PICTURES_DIR/wallpapers"
 wallpapers=($(find "$path" -iname "*.jpeg"))
 declare -a wrong_resolutions
 

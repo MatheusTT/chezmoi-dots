@@ -24,7 +24,8 @@ bindkey "^[[1;5D" backward-word
 
 better_cut() {
   zle kill-whole-line
-  wl-copy "$CUTBUFFER"
+  [[ "$XDG_SESSION_TYPE" = "wayland" ]] && wl-copy "$CUTBUFFER" ||
+  echo "$CUTBUFFER" | xclip -sel clip
 }
 zle -N better_cut
 bindkey "^U" better_cut

@@ -3,7 +3,7 @@
 source colors.conf
 
 
-path="/home/$(whoami)/Pictures/wallpapers"
+path="$XDG_PICTURES_DIR/wallpapers"
 images=($(ls $path | sed "/README.md/d"))
 
 cd $path

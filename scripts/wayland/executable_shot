@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 get-date() {
-  date "+%A_%R_%d-%m-%y"
+  date "+%A-%R-%d-%m-%y"
 }
+echo "$(get-date)"
 
 freeze-select() {
-  grim - | imv -f - &
+  grim - | imv -f -w "imv-screenshot" - &
   imv_pid=$!
   # while [ -z "$(xdotool search --pid "$imv_pid")" ]; do
       # sleep 0.1
@@ -19,7 +20,7 @@ while [[ "$1" ]]; do
   case "$1" in
     select|s)
       freeze-select
-      grim "$HOME/Pictures/screenshots/$(get-date).png" -g "$(slurp -c $outline_color)"
+      grim -g "$(slurp -d)" "$HOME/Pictures/screenshots/$(get-date).png"
       kill $imv_pid
       ;;
     select-copy|scp)

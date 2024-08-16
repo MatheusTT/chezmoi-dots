@@ -4,7 +4,7 @@ source colors.conf
 
 pidof -q swaybg && killall swaybg
 
-WALL_PATH="$HOME/Pictures/wallpapers"
+WALL_PATH="$XDG_PICTURES_DIR/wallpapers"
 CACHE_FILE="$XDG_CACHE_HOME/scripts/wallpapers_left"
 
 

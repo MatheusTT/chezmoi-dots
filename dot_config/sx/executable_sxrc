@@ -12,13 +12,9 @@ setxkbmap br &
 numlockx on &
 xset r rate 500 30 s 0 -dpms &
 xsetroot -cursor_name left_ptr &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-# xss-lock --transfer-sleep-lock -- ~/scripts/xorg/lock &
 
-redshift -PO 4500K &
 dunst &
-flameshot &
-~/scripts/random-wallpaper &
+dex -a -s $HOME/.config/autostart:$HOME/.config/autostart/xorg &
 
 
 exec bspwm

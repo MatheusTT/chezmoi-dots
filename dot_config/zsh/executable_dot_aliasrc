@@ -13,6 +13,11 @@ alias mkdir='printf "${bold_green}" && mkdir -pv'
 alias back='cd $OLDPWD'
 alias :q='exit'
 
+# System
+alias grub-edit='doas nvim /etc/default/grub'
+alias grub-update='doas grub-mkconfig -o /boot/grub/grub.cfg'
+alias ua='~/scripts/updates -v get'
+
 # Other commands
 alias neo='nvim'
 alias bat='bat --number --theme Dracula'
@@ -21,15 +26,16 @@ alias wget='wget --hsts-file=${XDG_DATA_HOME}/.wget-hsts'
 alias clipboard='wl-copy'
 alias ytdl='yt-dlp -f "bv*+ba/b" -o "~/Downloads/%(title)s.%(ext)s"'
 alias ytdla='yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 -o "~/Downloads/%(title)s.%(ext)s"'
-alias ipman='doas ipman'
 alias rm='trash'
 alias ip='ip --color=auto'
 alias close='killall -s SIGTERM'
-alias set-bg='feh --no-fehbg --bg-fill'
+alias set-xbg='feh --no-fehbg --bg-fill'
+alias set-wbg='swaybg -i'
 alias sticky='flameshot gui -s --pin'
 alias gdu='gdu --si'
-alias y='yazi'
+alias rr='curl -s -L http://bit.ly/10hA8iC | bash'
 
+# GIT Aliases
 alias gits='git status'
 alias gita='git add'
 alias gitd='git diff'
@@ -40,35 +46,19 @@ giti() {
   echo "$1" >> "$PWD/.gitignore"
 }
 
-# poweroff() {
-#   while pidof timeshift; do
-#     echo "Waiting for Timeshift..."
-#     sleep 5
-#   done
-#   /usr/bin/poweroff
-# }
-
-# ranger_cd() {
-#     temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
-#     ranger --choosedir="$temp_file" -- "${@:-$PWD}"
-#     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-#         cd -- "$chosen_dir"
-#     fi
-#     rm -f -- "$temp_file"
-# }
-#
-# # This binds Ctrl-O to ranger-cd:
-# zle -N ranger_cd
-# bindkey "^O" ranger_cd
-
-
-# System
-#alias sus='sudo systemctl'
-alias ua='~/scripts/updates -v get'
-alias grub-edit='doas nvim /etc/default/grub'
-alias grub-update='doas grub-mkconfig -o /boot/grub/grub.cfg'
+clone-tmp() {
+  cd /tmp/ && git clone "$@"
+  cd "$OLDPWD" || return
+}
 
 ## Functions ##
+y() {
+  TMP="$(mktemp -t yazi-cwd.XXXXX)"
+  yazi --cwd-file "$TMP"
+  [[ -f "$TMP" ]] && cd "$(cat "$TMP")" &&
+  rm "$TMP" || true
+}
+
 ex() {
   if [[ -f $1 ]]; then
     case $1 in
@@ -90,29 +80,9 @@ ex() {
   fi
 }
 
-mksh() {
-  if [[ ! -e "$1" ]]; then
-    if [[ -d $(dirname "$1") ]]; then
-      echo -e "#!/usr/bin/env bash\n\n" > "$1" 
-      chmod +x "$1"
-      if [[ "$2" = "-e" ]]; then
-        neo "$1"
-      fi
-    fi
-  fi
-}
-
-mkpy() {
-  if [[ ! -e "$1" ]]; then
-    if [[ -d $(dirname "$1") ]]; then
-      echo -e "#!/usr/bin/env python3" > "$1"
-      if [[ -n "$2" ]]; then
-        echo "import $2" >> "$1"
-      fi
-      echo -e "\n\ndef main() -> None:\n  ...\n\nif __name__ == \"__main__\":\n  main()" >> "$1"
-      chmod +x "$1"
-    fi
-  fi
+mnt-pendrive() {
+  sudo chmod 777 /mnt/pendrive
+  sudo mount -o uid=1000,gid=1000 "$1" /mnt/pendrive
 }
 
 mkcd() {
@@ -131,11 +101,6 @@ get-ip() {
   ip -f inet address show wlp1s0 | awk -F'[/ ]' '/inet/ { print $6 }'
 }
 
-# fix-pacman-nopgp() {
-#   doas rm -r /var/lib/pacman/sync
-#   doas pacman -Syy
-# }
-
 fix-pacman() {
   if [[ "$1" == "nopgp" ]]; then
     doas rm -r /var/lib/pacman/sync
@@ -144,13 +109,6 @@ fix-pacman() {
     doas rm /var/lib/pacman/db.lck
   fi
 }
-
-# weather() {
-#   python -c 'import sys,requests
-# city = "Curitiba"
-# resp = requests.get("https://wttr.in/" + city.replace(" ", "+"))
-# print(resp.text)'
-# }
 
 nmwifi() {
   case $1 in
@@ -165,39 +123,13 @@ nmwifi() {
 
 reload() {
   killall -q "$1"
-  $1 & disown
-
-  # if [[ "$1" == "stalonetray" ]]; then
-  #   for name in stalonetray eww-bar; do
-  #     xdo lower -N ${name}
-  #     xdo above -N ${name} -t "$(xdo id -N Bspwm -n root)"
-  #   done
-  # fi
-}
-
-clone-tmp() {
-  cd /tmp/ && git clone "$1"
-  cd "$OLDPWD" || return
+  "$@" & disown
 }
 
 back-edit() {
   if [[ -f $1 ]]; then
     cp "$1" "$1.backup" && nvim "$1"
   fi
-}
-
-# reset_nvchad() {
-#   rm -rf ~/.config/nvim
-#   rm -rf ~/.local/share/nvim
-#   rm -rf ~/.cache/nvim
-#   git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-#   ln -sf ~/dotfiles/config/nvim/lua/custom ~/.config/nvim/lua/custom
-#   nvim +'hi NormalFloat guibg=#1e222a' +NvChadUpdate
-# }
-
-zipf() {
-  path="$1"
-  zip "$(dirname "$path")" "$2"
 }
 
 cleanup() {
@@ -224,33 +156,6 @@ cleanup() {
 }
 
 
-## Miscellaneous ##
-alias rr='curl -s -L http://bit.ly/10hA8iC | bash'
-alias tf='cd /mnt/steam/SteamLibrary/steamapps/common/Team\ Fortress\ 2/tf/'
-
-fieplogin() {
-  cd $HOME/dev/fieplogin/
-  source venv/bin/activate
-  python main.py
-  deactivate
-  cd $OLDPATH
-}
-
-# start-server() {
-#   SERVER_PATH="/home/broa/.games/$(grep "$1" <<< "$(ls ~/.games)")"
-#   [[ -d $SERVER_PATH ]] && cd "$SERVER_PATH" &&
-#   java -Xms1G -Xmx1G -jar server.jar --nogui &&
-#   cd "$OLDPWD" || return
-# }
-
-# init-ngrok() {
-#   [[ -n "$(pidof ngrok)" ]] && killall -s SIGKILL ngrok
-#   sh -c "ngrok tcp --region=sa 25565 &"
-#   sleep 1
-#   curl -s localhost:4040/api/tunnels | jq '.tunnels[0]["public_url"]' | \
-#   awk -F'["/]' '{print $(NF-1)}' | clipboard
-# }
-
 video-wallpaper() {
   VIDEO_PATH="/tmp/video.webm"
   [[ -f "$VIDEO_PATH" ]] && rm 
@@ -258,15 +163,32 @@ video-wallpaper() {
   mpvpaper -f -o "no-audio loop --speed=3" eDP-1 "$VIDEO_PATH"
 }
 
-# grapejuice-fixes() {
-#   [[ -e /tmp/install.py ]] && rm /tmp/install.py
-#   curl https://pastebin.com/raw/5SeVb005 -o /tmp/install.py
-#   python /tmp/install.py
-# }
+## Programing ##
+# Bash
+mksh() {
+  if [[ ! -e "$1" ]]; then
+    if [[ -d $(dirname "$1") ]]; then
+      echo -e "#!/usr/bin/env bash\n\n" > "$1" 
+      chmod +x "$1"
+      if [[ "$2" = "-e" ]]; then
+        neo "$1"
+      fi
+    fi
+  fi
+}
 
-compress-mkv() {
-  FILE_NAME="$(awk -F. '{print $1}' <<< "$1")"
-  gamemoderun ffmpeg -i "$1" -vcodec libx265 -crf 28 "${FILE_NAME}.mp4" 
+# Python
+mkpy() {
+  if [[ ! -e "$1" ]]; then
+    if [[ -d $(dirname "$1") ]]; then
+      echo -e "#!/usr/bin/env python3" > "$1"
+      if [[ -n "$2" ]]; then
+        echo "import $2" >> "$1"
+      fi
+      echo -e "\n\ndef main() -> None:\n  ...\n\nif __name__ == \"__main__\":\n  main()" >> "$1"
+      chmod +x "$1"
+    fi
+  fi
 }
 
 venv() {
@@ -276,24 +198,3 @@ venv() {
     source venv/bin/activate
   fi
 }
-
-# rm-shader-cache() {
-#   STEAM_PATH="$HOME/.local/share/Steam"
-#   STEAMAPPS_PATH="$STEAM_PATH/steamapps"
-#   SHADER_PATH="$STEAMAPPS_PATH/shadercache"
-#
-#   declare -A GAMES
-#   for i in $(ls $SHADER_PATH); do
-#     GAMES[$i]="$(awk -F\" '/name/ {print $4}' "$STEAMAPPS_PATH/appmanifest_${i}.acf")"
-#   done
-#   
-#   echo 1
-#   APPID=$(for key in "${!GAMES[@]}"; do echo "$key: ${GAMES[${key}]}"; done | fzf --prompt="Selecione um jogo: " | awk -F: '{print $1}')
-#   echo 2
-#   if [[ -n "$APPID" ]]; then
-#     rm -rf "$SHADER_PATH/$APPID"
-#     echo "Shader cache from ${GAMES[$APPID]} (${APPID}) removed."
-#   else
-#     echo "Shader cache doesn't exists"
-#   fi
-# }

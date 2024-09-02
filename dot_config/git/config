@@ -1,0 +1,7 @@
+[user]
+	email = mttomaz@duck.com
+  name = MatheusTT
+[core]
+  editor = nvim
+[init]
+	defaultBranch = master

@@ -1,0 +1,34 @@
+# Rebinding the quit keys to not create a cwd file by default.
+[[manager.prepend_keymap]]
+on   = "q"
+run  = "quit --no-cwd-file"
+desc = "Exit the process without writing cwd-file"
+
+[[manager.prepend_keymap]]
+on   = "Q"
+run  = "quit"
+desc = "Exit the process"
+
+# Plugins
+## Smart Enter
+[[manager.prepend_keymap]]
+on   = "l"
+run  = "plugin --sync smart-enter"
+desc = "Enter the child directory, or open the file"
+
+[[manager.prepend_keymap]]
+on   = "<Right>"
+run  = "plugin --sync smart-enter"
+desc = "Enter the child directory, or open the file"
+
+## Max Preview
+[[manager.prepend_keymap]]
+on   = "T"
+run  = "plugin --sync max-preview"
+desc = "Maximize or restore preview"
+
+# Python sorting script
+[[manager.prepend_keymap]]
+on   = "<C-S>"
+run  = 'shell --confirm "python $HOME/Documents/dev/python/attof/main.py"'
+desc = "Sort Downloads directory"

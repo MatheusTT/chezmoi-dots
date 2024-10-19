@@ -1,3 +1,4 @@
+// -*- mode: jsonc -*-
 {
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
@@ -23,7 +24,7 @@
             "default": "󰝥"
         },
         "persistent-workspaces": {
-             "*": 6 // 5 workspaces by default on every monitor
+             "*": 7 // 5 workspaces by default on every monitor
         }
     },
     "tray": {

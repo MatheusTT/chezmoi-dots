@@ -1,4 +1,5 @@
 if [[ "$(tty)" = "/dev/tty1" ]]; then
   # Hyprland
-  pgrep bspwm || sx
+  clear
+  # pgrep bspwm || sx
 fi

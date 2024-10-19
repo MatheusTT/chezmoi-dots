@@ -21,7 +21,7 @@ alias ua='~/scripts/updates -v get'
 # Other commands
 alias neo='nvim'
 alias bat='bat --number --theme Dracula'
-alias cat='bat'
+alias cat='bat -p'
 alias wget='wget --hsts-file=${XDG_DATA_HOME}/.wget-hsts'
 alias clipboard='wl-copy'
 alias ytdl='yt-dlp -f "bv*+ba/b" -o "~/Downloads/%(title)s.%(ext)s"'
@@ -54,7 +54,7 @@ clone-tmp() {
 ## Functions ##
 y() {
   TMP="$(mktemp -t yazi-cwd.XXXXX)"
-  yazi --cwd-file "$TMP"
+  yazi --cwd-file "$TMP" "$@"
   [[ -f "$TMP" ]] && cd "$(cat "$TMP")" &&
   rm "$TMP" || true
 }
@@ -112,11 +112,27 @@ fix-pacman() {
 
 nmwifi() {
   case $1 in
-    -l|--list)
-      nmcli -f IN-USE,SSID,BARS,RATE,SECURITY device wifi list
+    l|list|-l|--list)
+      nmcli device wifi list
       ;;
-    -c|--connect)
+    c|connect|-c|--connect)
       nmcli device wifi connect "$2"
+      ;;
+  esac
+}
+
+bt() {
+  case $1 in
+    l|list)
+      bluetoothctl devices
+      ;;
+    c|connect)
+      MAC_ADRESS="$(bluetoothctl devices | grep "$2" | awk '{print $2}')"
+      bluetoothctl connect "$MAC_ADRESS"
+      ;;
+    d|disconnect)
+      MAC_ADRESS="$(bluetoothctl devices | grep "$2" | awk '{print $2}')"
+      bluetoothctl disconnect "$MAC_ADRESS"
       ;;
   esac
 }

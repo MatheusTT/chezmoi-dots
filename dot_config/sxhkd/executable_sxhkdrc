@@ -12,7 +12,7 @@ super + backslash
 
 # browser
 super + b 
-  google-chrome-stable
+  zen
 
 # file manager
 super + f 

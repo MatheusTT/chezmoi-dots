@@ -50,6 +50,8 @@ bspc rule -a Gufw.py                             state=floating
 bspc rule -a Gcolor3                             state=floating
 bspc rule -a File-roller                         state=floating
 
+bspc rule -a Picture-in-Picture  state=floating
+
 # Games
 bspc rule -a hl2_linux                desktop='^5'
 
@@ -67,5 +69,5 @@ $HOME/.config/polybar/launch.sh &
 # Eww bar
 # "$HOME"/.config/eww/launch.sh &
 
-killall -q sxhkd; sxhkd &
+killall -q sxhkd; sxhkd -c "$HOME/.config/bspwm/sxhkdrc" &
 # setxkbmap br &
